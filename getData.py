@@ -5,7 +5,7 @@ import streamlit as st
 # html tables. In this case, our html table comes from
 # the wikipedia page regarding the best selling video games
 # @st.cache
-def getGameData():
+def getGameDataWiki():
     # url is the link to the website
     url = 'https://en.wikipedia.org/wiki/List_of_best-selling_video_games'
 
@@ -19,3 +19,14 @@ def getGameData():
 
     # finally, return the gameData html table
     return gameData
+
+
+# pandas also supports extracting data from csv files which we will
+# also try to implement. We will be using data from Kaggle regarding
+# video game sales
+# url = https://www.kaggle.com/gregorut/videogamesales
+def getGameDataCSV():
+    csv_data = pd.read_csv("E:\\majorProjectDSMobile\\vgsales.csv")
+    return csv_data
+
+    
