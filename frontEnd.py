@@ -38,7 +38,7 @@ with dataSet:
 
     # Using the Image library to open the figure I want to display.
     # To open the image, I needed to use the directory
-    image = Image.open("C:\\Users\\patri\\Pictures\\controller.jpg")
+    # image = Image.open("")
 
     # Quick formatted image using streamlit column feature.
     # I had two columns of equal width at the front and end,
