@@ -1,8 +1,7 @@
-import altair
 import pandas as pd
 import streamlit as st
 import regex as re
-from getData import getGameData
+from getData import *
 from PIL import Image
 # Website: streamlit io for Streamlit library (or the Streamlit Blog)
 
@@ -38,7 +37,7 @@ with dataSet:
 
     # Using the Image library to open the figure I want to display.
     # To open the image, I needed to use the directory
-    # image = Image.open("")
+    image = Image.open("E:\dsFiles\controllers.jpg")
 
     # Quick formatted image using streamlit column feature.
     # I had two columns of equal width at the front and end,
@@ -64,32 +63,35 @@ with dataSet:
                       options = ['1980s' ,'1990s','2000s','2010s'], index=0)
 
     # header method - standard practice if you need more headings
-    st.header("List of best-selling video games (Wikipedia)")
-    st.text("I found this data set on Wikipedia!")
+    st.header("List of best-selling video games (Kaggle)")
+    st.text("I found this data set on Kaggle!")
     # text method, which allows you to display text with
     # a specified width
 
     # The getData file contains the getGameData method which allows
     # us to get the html table data from the wikipedia page!
-    game_data = getGameData()
+    game_data = pd.DataFrame(getGameDataCSV())
 
     # Columns is a list of the specific columns we want displayed
     # on our website!!
-    columns = ['Title', 'Sales', 'Genre(s)', 'Platform(s)']
+    columns = ["Name", "Publisher", "Global Sales"]
+    # game_data['Sales'] = game_data['Sales'].replace(['238,000,000[b]'], '238,000,000')
 
-
-    game_data['Sales'] = game_data['Sales'].replace(['238,000,000[b]'], '238,000,000')
-
-    # Since html tables start at the 0 index, we want to increase
+    # Since tables start at the 0 index, we want to increase
     # the member by 1 to follow standard convention
     game_data.index += 1
 
+    # Use pandas rename function to rename Global Sales column
+    # Pass inplace parameter as True such that the original data frame
+    # object is returned instead of a copy
+    game_data.rename(columns=({"Global_Sales" : "Global Sales"}), inplace=True)
+
     # Streamlit has a built-in method called table which prints out
     # all components directly on the page.
-    st.table(game_data[columns])
+    st.table(game_data[columns].head(50))
 
-    #game data specifically from sales will be displayed on our bar chart
-    sales_distribution = pd.DataFrame(game_data['Sales'].value_counts())
+    # game data specifically from sales will be displayed on our bar chart
+    # sales_distribution = pd.DataFrame(game_data['Global Sales'].value_counts())
 
 
 with features:

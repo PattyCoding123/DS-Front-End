@@ -1,11 +1,10 @@
 import pandas as pd
-import streamlit as st
 # pandas supports webscraping via reading html tables off
 # off of wikipedia and other websites that utilize
 # html tables. In this case, our html table comes from
 # the wikipedia page regarding the best selling video games
 # @st.cache
-def getGameDataWiki():
+def getGameDataHTML():
     # url is the link to the website
     url = 'https://en.wikipedia.org/wiki/List_of_best-selling_video_games'
 
@@ -20,13 +19,12 @@ def getGameDataWiki():
     # finally, return the gameData html table
     return gameData
 
-
-# pandas also supports extracting data from csv files which we will
-# also try to implement. We will be using data from Kaggle regarding
-# video game sales
-# url = https://www.kaggle.com/gregorut/videogamesales
+# pandas supports data mining via reading csv files
+# and storing the data in a easy, retrievable manner.
+# We will use that method for this function.
 def getGameDataCSV():
-    csv_data = pd.read_csv("E:\\majorProjectDSMobile\\vgsales.csv")
-    return csv_data
+    csv = "E:\\dsFiles\vgsales.csv"
 
-    
+    csv_table = pd.read_csv(csv)
+
+    return csv_table
