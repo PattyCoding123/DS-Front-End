@@ -37,7 +37,7 @@ with dataSet:
 
     # Using the Image library to open the figure I want to display.
     # To open the image, I needed to use the directory
-    image = Image.open("E:\dsFiles\controllers.jpg")
+    image = Image.open("E:\\dsFiles\\controllers.jpg")
 
     # Quick formatted image using streamlit column feature.
     # I had two columns of equal width at the front and end,
@@ -57,14 +57,10 @@ with dataSet:
     # for columns to work
     sel_col, disp_col = st.columns(2)
 
-    # The selectbox method will display the text of the dropbox, and the other parameters
-    # signify the options for the drop down, and the default index.
-    sel_col.selectbox('Which era would you like to go to?',
-                      options = ['1980s' ,'1990s','2000s','2010s'], index=0)
-
     # header method - standard practice if you need more headings
     st.header("List of best-selling video games (Kaggle)")
     st.text("I found this data set on Kaggle!")
+
     # text method, which allows you to display text with
     # a specified width
 
@@ -72,10 +68,15 @@ with dataSet:
     # us to get the html table data from the wikipedia page!
     game_data = pd.DataFrame(getGameDataCSV())
 
+    # The selectbox method will display the text of the dropbox, and the other parameters
+    # signify the options for the drop down, and the default index.
+    # We will use the variable 'era' to hold the value of year
+    era = sel_col.selectbox('Which era would you like to go to?',
+                            options=[(2016 - i) for i in range(2017 - 1980)], index=0)
+
     # Columns is a list of the specific columns we want displayed
     # on our website!!
-    columns = ["Name", "Publisher", "Global Sales"]
-    # game_data['Sales'] = game_data['Sales'].replace(['238,000,000[b]'], '238,000,000')
+    columns = ["Name", "Platform", "Publisher", "Global Sales (millions)"]
 
     # Since tables start at the 0 index, we want to increase
     # the member by 1 to follow standard convention
@@ -84,11 +85,17 @@ with dataSet:
     # Use pandas rename function to rename Global Sales column
     # Pass inplace parameter as True such that the original data frame
     # object is returned instead of a copy
-    game_data.rename(columns=({"Global_Sales" : "Global Sales"}), inplace=True)
+    game_data.rename(columns=({"Global_Sales" : "Global Sales (millions)"}), inplace=True)
+
+    # Use groupby function on the DataFrame object in order to sort all
+    # values by the year they were released. Edit done - 3/27/2022
+    formatData = game_data.groupby(['Year'])
 
     # Streamlit has a built-in method called table which prints out
     # all components directly on the page.
-    st.table(game_data[columns].head(50))
+    # Use get_group method in order to display all elements that were
+    # released in the same year.
+    st.table(formatData[columns].get_group(era).head(50))
 
     # game data specifically from sales will be displayed on our bar chart
     # sales_distribution = pd.DataFrame(game_data['Global Sales'].value_counts())
